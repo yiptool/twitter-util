@@ -21,8 +21,6 @@
 // THE SOFTWARE.
 //
 #import <UIKit/UIKit.h>
-#import <Accounts/Accounts.h>
-#import <yip-imports/ios/TWAPIManager.h>
 
 enum TwitterAuthResult
 {
@@ -33,5 +31,4 @@ enum TwitterAuthResult
 	TWITTER_AUTH_SUCCESS
 };
 
-void twitterAuth(UIView * parentView, TWAPIManager * manager, ACAccountStore * accStore,
-	void (^ callback)(TwitterAuthResult, NSDictionary *));
+void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDictionary *));

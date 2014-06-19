@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 //
 #import "twitter_auth.h"
+#import <Accounts/Accounts.h>
+#import <yip-imports/ios/TWAPIManager.h>
 #import <yip-imports/ios/i18n.h>
 
 @interface NZTwitterAuthHelper : NSObject<UIActionSheetDelegate>
@@ -100,9 +102,9 @@
 
 @end
 
-void twitterAuth(UIView * parentView, TWAPIManager * manager, ACAccountStore * accStore,
-	void (^ callback)(TwitterAuthResult, NSDictionary *))
+void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDictionary *))
 {
+	ACAccountStore * accStore = [[[ACAccountStore alloc] init] autorelease];
 	ACAccountType * twitterType = [accStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
 	[accStore requestAccessToAccountsWithType:twitterType options:NULL completion:^(BOOL ok, NSError * error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -123,7 +125,7 @@ void twitterAuth(UIView * parentView, TWAPIManager * manager, ACAccountStore * a
 			}
 
 			NZTwitterAuthHelper * helper = [[NZTwitterAuthHelper alloc]
-				initWithAccounts:accounts twitterManager:manager callback:callback];
+				initWithAccounts:accounts twitterManager:[TWAPIManager sharedInstance] callback:callback];
 
 			if (!helper)
 			{
