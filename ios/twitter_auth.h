@@ -22,6 +22,10 @@
 //
 #import <UIKit/UIKit.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum TwitterAuthResult
 {
 	TWITTER_AUTH_DENIED = 0,
@@ -31,4 +35,8 @@ enum TwitterAuthResult
 	TWITTER_AUTH_SUCCESS
 };
 
-void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDictionary *));
+void twitterAuth(UIView * parentView, void (^ callback)(enum TwitterAuthResult, NSDictionary *));
+
+#ifdef __cplusplus
+}
+#endif
