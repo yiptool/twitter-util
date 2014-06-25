@@ -26,7 +26,7 @@
 #import <yip-imports/ios/i18n.h>
 
 @interface NZTwitterAuthHelper : NSObject<UIActionSheetDelegate>
-@property (nonatomic, copy, readonly) void (^ callback)(TwitterAuthResult, NSDictionary *);
+@property (nonatomic, copy, readonly) void (^ callback)(TwitterAuthResult, ACAccount *, NSDictionary *);
 @property (nonatomic, retain, readonly) NSArray * accounts;
 @property (nonatomic, retain, readonly) TWAPIManager * twitterManager;
 @end
@@ -38,7 +38,7 @@
 @synthesize twitterManager;
 
 -(id)initWithAccounts:(NSArray *)accountArray twitterManager:(TWAPIManager *)manager
-	callback:(void (^)(TwitterAuthResult, NSDictionary *))cb
+	callback:(void (^)(TwitterAuthResult, ACAccount *, NSDictionary *))cb
 {
 	self = [super init];
 	if (self)
@@ -72,7 +72,7 @@
 	if (actionSheet && index == actionSheet.cancelButtonIndex)
 	{
 		if (callback)
-			callback(TWITTER_AUTH_CANCELLED, nil);
+			callback(TWITTER_AUTH_CANCELLED, nil, nil);
 		return;
 	}
 
@@ -82,7 +82,7 @@
 		{
 			NSLog(@"Unable to perform twitter auth: %@", error);
 			if (callback)
-				callback(TWITTER_AUTH_FAILED, nil);
+				callback(TWITTER_AUTH_FAILED, nil, nil);
 			return;
 		}
 
@@ -96,13 +96,13 @@
 		}
 
 		if (callback)
-			callback(TWITTER_AUTH_SUCCESS, params);
+			callback(TWITTER_AUTH_SUCCESS, account, params);
 	}];
 }
 
 @end
 
-void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDictionary *))
+void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, ACAccount *, NSDictionary *))
 {
 	ACAccountStore * accStore = [[[ACAccountStore alloc] init] autorelease];
 	ACAccountType * twitterType = [accStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -112,7 +112,7 @@ void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDic
 			{
 				NSLog(@"Unable to get access to twitter accounts: %@", error);
 				if (callback)
-					callback(TWITTER_AUTH_DENIED, nil);
+					callback(TWITTER_AUTH_DENIED, nil, nil);
 				return;
 			}
 
@@ -120,7 +120,7 @@ void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDic
 			if (accounts.count == 0)
 			{
 				if (callback)
-					callback(TWITTER_AUTH_NO_ACCOUNTS, nil);
+					callback(TWITTER_AUTH_NO_ACCOUNTS, nil, nil);
 				return;
 			}
 
@@ -130,7 +130,7 @@ void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDic
 			if (!helper)
 			{
 				if (callback)
-					callback(TWITTER_AUTH_FAILED, nil);
+					callback(TWITTER_AUTH_FAILED, nil, nil);
 				return;
 			}
 
@@ -145,7 +145,7 @@ void twitterAuth(UIView * parentView, void (^ callback)(TwitterAuthResult, NSDic
 			{
 				[helper release];
 				if (callback)
-					callback(TWITTER_AUTH_FAILED, nil);
+					callback(TWITTER_AUTH_FAILED, nil, nil);
 				return;
 			}
 

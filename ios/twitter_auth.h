@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #import <UIKit/UIKit.h>
+#import <Accounts/Accounts.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,7 +36,7 @@ enum TwitterAuthResult
 	TWITTER_AUTH_SUCCESS
 };
 
-void twitterAuth(UIView * parentView, void (^ callback)(enum TwitterAuthResult, NSDictionary *));
+void twitterAuth(UIView * parentView, void (^ callback)(enum TwitterAuthResult, ACAccount *, NSDictionary *));
 
 #ifdef __cplusplus
 }
