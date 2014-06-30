@@ -1,8 +1,8 @@
 
-iOS Twitter Util
-================
+Twitter Util
+============
 
-This is an Objective-C library with useful wrappers for Twitter API.
+This is a library with useful wrappers for the Twitter API.
 
 Compiling this library
 ----------------------
@@ -10,7 +10,7 @@ Compiling this library
 This library is not intended to be built directly. Instead it is supposed
 to be included into projects using the [Yip](https://github.com/yiptool/yip.git).
 
-Use the `import ios-twitter-util` directive in your `Yipfile` to use this library.
+Use the `import twitter-util` directive in your `Yipfile` to use this library.
 
 License
 =======
